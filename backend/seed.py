@@ -5,11 +5,25 @@ from backend.database import SessionLocal, engine, Base
 from backend.models import User, Course, Unit, Skill, Lesson, Exercise, UserProgress
 
 def seed_db():
-    # Recreate tables
-    Base.metadata.drop_all(bind=engine)
+    # Ensure tables exist
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
+    try:
+        # Clear existing data in correct dependency order instead of dropping tables
+        # This avoids lock conflicts with previous server containers during rolling deploys
+        db.query(UserProgress).delete()
+        db.query(Exercise).delete()
+        db.query(Lesson).delete()
+        db.query(Skill).delete()
+        db.query(Unit).delete()
+        db.query(Course).delete()
+        db.query(User).delete()
+        db.commit()
+    except Exception as e:
+        print(f"Data clearing skipped/failed: {e}")
+        db.rollback()
+
     try:
         # 1. Seed Users
         me = User(
