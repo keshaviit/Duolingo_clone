@@ -1,0 +1,23 @@
+# Next.js build and cache
+frontend/.next/
+frontend/node_modules/
+frontend/.vercel
+
+# Python compiled files and cache
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+backend/.pytest_cache/
+backend/.venv/
+env/
+venv/
+ENV/
+
+# Databases
+*.db
+*.sqlite3
+
+# OS metadata
+.DS_Store
+Thumbs.db
