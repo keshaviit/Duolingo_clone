@@ -63,6 +63,7 @@ export interface Exercise {
   type: "MULTIPLE_CHOICE" | "WORD_BANK" | "FILL_BLANK" | "MATCH_PAIRS" | "TYPE_ANSWER";
   prompt: string;
   data: any; // Options list, matching pairs dictionary, etc.
+  correct_answer?: any;
 }
 
 export interface LessonCompleteResponse {

@@ -26,6 +26,7 @@ class ExerciseResponse(BaseModel):
     type: str
     prompt: str
     data: Any  # Parsed JSON (list, dict, etc.)
+    correct_answer: Optional[Any] = None
 
     class Config:
         from_attributes = True
