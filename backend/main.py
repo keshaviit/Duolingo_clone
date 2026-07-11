@@ -18,16 +18,20 @@ Base.metadata.create_all(bind=engine)
 
 # Auto-seed if database is empty (important for Render/production deployment)
 db_init = SessionLocal()
+run_seeding = False
 try:
     from backend.models import Course
     if db_init.query(Course).count() == 0:
-        print("Database is empty. Running auto-seeding...")
-        from backend.seed import seed_db
-        seed_db()
+        run_seeding = True
 except Exception as e:
     print(f"Auto-seed check failed/skipped: {e}")
 finally:
     db_init.close()
+
+if run_seeding:
+    print("Database is empty. Running auto-seeding...")
+    from backend.seed import seed_db
+    seed_db()
 
 app = FastAPI(title="Duolingo Clone API", description="FastAPI Backend for Duolingo Web App Clone")
 
