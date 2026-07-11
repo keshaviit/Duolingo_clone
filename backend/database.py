@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://postgres.socemkjujeufghvykfpq:RtzQzAWjO4VXWRUt@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+    "postgresql://postgres.socemkjujeufghvykfpq:RtzQzAWjO4VXWRUt@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
 )
 
 # Connect args configuration: check_same_thread is SQLite specific
