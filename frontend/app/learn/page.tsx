@@ -54,12 +54,16 @@ function LearnPageInner() {
   const [activeTooltipSkillId, setActiveTooltipSkillId] = useState<number | null>(null);
   const [showChest, setShowChest] = useState(false);
   // Track which chest keys have been opened (persist in localStorage)
-  const [openedChests, setOpenedChests] = useState<Set<string>>(() => {
+  const [openedChests, setOpenedChests] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
-      try { return new Set(JSON.parse(localStorage.getItem("openedChests") || "[]")); }
-      catch { return new Set(); }
+      try {
+        const parsed = JSON.parse(localStorage.getItem("openedChests") || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
     }
-    return new Set();
+    return [];
   });
 
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -97,11 +101,13 @@ function LearnPageInner() {
   const { addGemsAction } = useUserStore();
 
   const openChest = (key: string) => {
-    const next = new Set(openedChests).add(key);
-    setOpenedChests(next);
-    localStorage.setItem("openedChests", JSON.stringify(Array.from(next)));
-    addGemsAction(50);
-    setShowChest(true);
+    if (!openedChests.includes(key)) {
+      const next = [...openedChests, key];
+      setOpenedChests(next);
+      localStorage.setItem("openedChests", JSON.stringify(next));
+      addGemsAction(50);
+      setShowChest(true);
+    }
   };
 
   /* ── Zigzag offset ── */
@@ -200,7 +206,7 @@ function LearnPageInner() {
                       // chest: shown after every completed skill. Locked if skill not yet completed
                       const chestKey = `skill-${skill.id}-chest`;
                       const chestUnlocked = isCompleted;
-                      const chestOpened = openedChests.has(chestKey);
+                      const chestOpened = openedChests.includes(chestKey);
 
                       return (
                         <div key={skill.id} className="flex flex-col items-center w-full">
