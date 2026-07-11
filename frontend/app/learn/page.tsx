@@ -99,7 +99,7 @@ function LearnPageInner() {
   const openChest = (key: string) => {
     const next = new Set(openedChests).add(key);
     setOpenedChests(next);
-    localStorage.setItem("openedChests", JSON.stringify([...next]));
+    localStorage.setItem("openedChests", JSON.stringify(Array.from(next)));
     addGemsAction(50);
     setShowChest(true);
   };
